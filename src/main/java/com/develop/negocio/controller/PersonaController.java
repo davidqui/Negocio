@@ -10,19 +10,33 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
+
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/api/personas")
 public class PersonaController {
     private  PersonaRepository personaRepository;
 
-
     @Autowired
     private  PersonaService personaService;
+
+    /**
+     * Obtener todas las personas
+     *  @return
+     */
     @GetMapping
+    @ResponseBody
     public List<Persona> getAllPersonas() {
         return personaService.getAllPersonas();
     }
 
+
+    /**
+     * Encontrar persona por ID
+     * @param id
+     * @return
+     */
     @GetMapping("/{id}")
     public ResponseEntity<Persona> getPersonaById(@PathVariable Integer id) {
         return personaService.getPersonaById(id)
@@ -40,7 +54,6 @@ public class PersonaController {
         Persona createdPersona = personaService.createPersona(persona);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdPersona);
     }
-
 
     /**
      * Actualizar una persona existente en la base de datos
@@ -68,6 +81,4 @@ public class PersonaController {
         personaService.deletePersona(id);
         return ResponseEntity.noContent().build();
     }
-
-
 }
