@@ -35,7 +35,7 @@ public class SecurityConfig {
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
                         .allowedOrigins("*")
-                        .allowedMethods("GET", "POST");
+                        .allowedMethods("GET", "POST",  "PUT", "DELETE", "HEAD", "OPTIONS",  "PATCH");
             }
         };
     }

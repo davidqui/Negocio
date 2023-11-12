@@ -1,9 +1,6 @@
 package com.develop.negocio.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.Getter;
@@ -19,15 +16,15 @@ import java.time.LocalDate;
 @Table(name = "PERSONA")
 public class Persona {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID", nullable = false)
     private Integer id;
 
-    @Size(max = 50)
-    @Column(name = "NOMBRE", length = 50)
+
+    @Column(name = "NOMBRE", length = 200)
     private String nombre;
 
-    @Size(max = 50)
-    @Column(name = "APELLIDO", length = 50)
+    @Column(name = "APELLIDO", length = 200)
     private String apellido;
 
     @Column(name = "FECHA_NACIMIENTO")
