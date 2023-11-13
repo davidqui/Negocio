@@ -3,23 +3,25 @@ package com.develop.negocio.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Objects;
 
 @Data
 @Getter
 @Setter
+@EqualsAndHashCode(callSuper = false)
 @Entity
-@Table(name = "PERSONA")
+@Inheritance(strategy = InheritanceType.JOINED)
+@Table(name = "PERSONA", schema = "C##NEGOCIO", catalog = "")
 public class Persona {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID", nullable = false)
     private Integer id;
-
 
     @Column(name = "NOMBRE", length = 200)
     private String nombre;
@@ -31,20 +33,26 @@ public class Persona {
     private LocalDate fechaNacimiento;
 
     @Size(max = 15)
-    @Column(name = "NIT", length = 15)
+    @Column(name = "NIT")
     private String nit;
 
     @Column(name = "EDAD")
-    private Short edad;
-
-    @Column(name = "FECHA_CONTRATO")
-    private LocalDate fechaContrato;
+    private Byte edad;
 
     @Size(max = 100)
     @Column(name = "CORREO", length = 100)
     private String correo;
 
-    @Column(name = "SALARIO", precision = 10, scale = 2)
-    private BigDecimal salario;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Persona that = (Persona) o;
+        return Objects.equals(id, that.id) && Objects.equals(nombre, that.nombre) && Objects.equals(apellido, that.apellido) && Objects.equals(fechaNacimiento, that.fechaNacimiento) && Objects.equals(nit, that.nit) && Objects.equals(edad, that.edad) && Objects.equals(correo, that.correo);
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, nombre, apellido, fechaNacimiento, nit, edad, correo);
+    }
 }

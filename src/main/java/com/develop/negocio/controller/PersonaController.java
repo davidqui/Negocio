@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 @RestController
 @RequestMapping("/api/personas")
 public class PersonaController {
-    private  PersonaRepository personaRepository;
+    private PersonaRepository personaRepository;
 
     @Autowired
     private  PersonaService personaService;

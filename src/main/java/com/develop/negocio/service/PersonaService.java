@@ -54,9 +54,7 @@ public class PersonaService {
                     persona.setFechaNacimiento(updatedPersona.getFechaNacimiento());
                     persona.setNit(updatedPersona.getNit());
                     persona.setEdad(updatedPersona.getEdad());
-                    persona.setFechaContrato(updatedPersona.getFechaContrato());
                     persona.setCorreo(updatedPersona.getCorreo());
-                    persona.setSalario(updatedPersona.getSalario());
                     return personaRepository.save(persona);
                 })
                 .orElse(null);

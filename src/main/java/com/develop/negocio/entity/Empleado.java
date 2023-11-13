@@ -1,47 +1,38 @@
 package com.develop.negocio.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import jakarta.validation.constraints.Size;
+import jakarta.persistence.*;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.EqualsAndHashCode;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.sql.Date;
 
 @Data
-@Getter
-@Setter
+@EqualsAndHashCode(callSuper = false)
 @Entity
-@Table(name = "EMPLEADO")
+@Table(name = "EMPLEADO", schema = "C##NEGOCIO", catalog = "")
 public class Empleado {
     @Id
-    @Column(name = "EMPLEADO_ID", nullable = false)
-    private Integer id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "EMPLEADO_ID")
+    private Integer empleadoId;
 
-    @Size(max = 50)
-    @Column(name = "NOMBRE", length = 50)
-    private String nombre;
+    @Basic
+    @Column(name = "PERSONA_ID")
+    private Integer personaId;
 
-    @Size(max = 50)
-    @Column(name = "APELLIDO", length = 50)
-    private String apellido;
+    @Basic
+    @Column(name = "SALARIO")
+    private String salario;
 
-    @Column(name = "SALARIO", precision = 10, scale = 2)
-    private BigDecimal salario;
-
-    @Size(max = 15)
-    @Column(name = "NIT", length = 15)
-    private String nit;
-
-    @Size(max = 100)
-    @Column(name = "CORREO", length = 100)
-    private String correo;
-
+    @Basic
     @Column(name = "FECHA_CONTRATO")
-    private LocalDate fechaContrato;
+    private Date fechaContrato;
 
+    @Basic
+    @Column(name = "CATEGORIA")
+    private String categoria;
+
+    @Basic
+    @Column(name = "CARGO")
+    private String cargo;
 }
