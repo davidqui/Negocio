@@ -3,9 +3,11 @@ package com.develop.negocio.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+import org.springframework.http.ResponseEntity;
 
 import java.sql.Date;
 import java.util.Objects;
+import java.util.Optional;
 
 @Data
 @Entity
@@ -62,5 +64,9 @@ public class Cliente {
     @Override
     public int hashCode() {
         return Objects.hash(clienteId, personaId, telefono, direccion, preferencias, puntuacion, fechaRegistro, ultimaCompra, categoria, notas);
+    }
+
+    public Optional<ResponseEntity<Object>> map(Object o) {
+        return Optional.empty();
     }
 }
