@@ -1,12 +1,17 @@
 package com.develop.negocio.entity;
 
-import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
+import jakarta.persistence.*;
 import java.sql.Date;
 
 @Data
+@Getter
+@Setter
 @EqualsAndHashCode(callSuper = false)
 @Entity
 @Table(name = "EMPLEADO", schema = "C##NEGOCIO", catalog = "")
@@ -35,4 +40,9 @@ public class Empleado {
     @Basic
     @Column(name = "CARGO")
     private String cargo;
+
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "PERSONA_ID", insertable = false, updatable = false)
+    private Persona persona;
 }

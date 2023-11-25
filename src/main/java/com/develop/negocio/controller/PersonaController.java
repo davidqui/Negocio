@@ -1,11 +1,14 @@
 package com.develop.negocio.controller;
 
+import com.develop.negocio.entity.Empleado;
 import com.develop.negocio.entity.Persona;
 import com.develop.negocio.repository.PersonaRepository;
+import com.develop.negocio.service.EmpleadoService;
 import com.develop.negocio.service.PersonaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,16 +24,29 @@ public class PersonaController {
     @Autowired
     private  PersonaService personaService;
 
+    @Autowired
+    private EmpleadoService empleadoService;
+
+
     /**
      * Obtener todas las personas
      *  @return
      */
     @GetMapping
     @ResponseBody
-    public List<Persona> getAllPersonas() {
-        return personaService.getAllPersonas();
-    }
+    @Transactional // Añade esta anotación
+    public List<Persona> getAllPersonasWithEmpleados() {
+        List<Persona> personas = personaService.getAllPersonas();
 
+        // Para cada persona, obtenemos la información de los empleados
+        for (Persona persona : personas) {
+            Integer personaId = persona.getId();
+            List<Empleado> empleados = empleadoService.getEmpleadosByPersonaId(personaId);
+            persona.setEmpleados(empleados);
+        }
+
+        return personas;
+    }
 
     /**
      * Encontrar persona por ID
@@ -39,9 +55,12 @@ public class PersonaController {
      */
     @GetMapping("/{id}")
     public ResponseEntity<Persona> getPersonaById(@PathVariable Integer id) {
-        return personaService.getPersonaById(id)
-                .map(persona -> ResponseEntity.ok().body(persona))
-                .orElse(ResponseEntity.notFound().build());
+        Persona persona = personaService.getPersonaWithEmpleado(id);
+        if (persona != null) {
+            return ResponseEntity.ok().body(persona);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     /**
@@ -50,8 +69,8 @@ public class PersonaController {
      * @return
      */
     @PostMapping
-    public ResponseEntity<Persona> createPersona(@RequestBody Persona persona) {
-        Persona createdPersona = personaService.createPersona(persona);
+    public ResponseEntity<Persona> createPersonaWithEmpleados(@RequestBody Persona persona) {
+        Persona createdPersona = personaService.createPersonaWithEmpleados(persona);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdPersona);
     }
 
@@ -63,7 +82,7 @@ public class PersonaController {
      */
     @PutMapping("/{id}")
     public ResponseEntity<Persona> updatePersona(@PathVariable Integer id, @RequestBody Persona updatedPersona) {
-        Persona persona = personaService.updatePersona(id, updatedPersona);
+        Persona persona = personaService.updatePersonaWithEmpleados(id, updatedPersona);
         if (persona != null) {
             return ResponseEntity.ok().body(persona);
         } else {

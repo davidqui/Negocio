@@ -1,14 +1,17 @@
 package com.develop.negocio.entity;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.Size;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
+import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.Objects;
+import java.util.List;
 
 @Data
 @Getter
@@ -42,6 +45,10 @@ public class Persona {
     @Size(max = 100)
     @Column(name = "CORREO", length = 100)
     private String correo;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "persona", fetch = FetchType.EAGER)
+    private List<Empleado> empleados;
 
     @Override
     public boolean equals(Object o) {

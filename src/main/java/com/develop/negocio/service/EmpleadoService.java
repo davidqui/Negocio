@@ -67,4 +67,13 @@ public class EmpleadoService {
     public void deletePersona(Integer id) {
         empleadoRepository.deleteById(id);
     }
+
+    /**
+     * Obtener una persona por su id y sus empleados
+     * @param personaId
+     * @return
+     */
+    public List<Empleado> getEmpleadosByPersonaId(Integer personaId) {
+        return empleadoRepository.findByPersonaId(personaId);
+    }
 }
